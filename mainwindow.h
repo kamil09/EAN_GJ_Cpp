@@ -7,9 +7,10 @@
 #include <iostream>
 #include <QTextStream>
 #include <QFile>
-#include <QTextStream>
 #include <QMessageBox>
 #include "plik.h"
+#include <QString>
+#include "algorytm.h"
 
 namespace Ui {
 class MainWindow;

@@ -52,7 +52,25 @@ void MainWindow::on_actionInformacje_2_triggered()
 
 void MainWindow::on_actionPolicz_triggered()
 {
+   int st=0;
+   int n = ui->tableWidget->columnCount()-1;
+   double *result = new double[n+1];
+   for(int i=0;i<=n;i++) result[i]=0;
 
+   double **numbers = new double*[ui->tableWidget->rowCount()+1];
+   for (int i=0;i<=ui->tableWidget->rowCount();i++)
+   numbers[i] = new double[ ui->tableWidget->columnCount()+1];
+
+   for(int i=0; i< ui->tableWidget->rowCount(); i++)
+      for (int k=0; k< ui->tableWidget->columnCount(); k++)
+         numbers[i][k]=ui->tableWidget->item(i,k)->text().toDouble();
+
+  result = GaussJordan(n,result,&st, numbers);
+  ui->tableWidget_2->setRowCount(n);
+   for(int i=0;i<n;i++){
+        ui->tableWidget_2->setItem(i,0, new QTableWidgetItem("X"+QString::number(i+1)));
+        ui->tableWidget_2->setItem(i,1, new QTableWidgetItem(QString::number(result[i+1])));
+    }
 }
 
 void  MainWindow::checkCanMakeCalc(){
@@ -103,7 +121,7 @@ void MainWindow::on_actionZapisz_tabel_triggered()
     QString filename = QFileDialog::getSaveFileName(this,tr("Wybierz plik do zapisu"),"","Text File (*.txt)");
     QFile file( filename );
     file.open(QIODevice::WriteOnly);
-    if(!file.isOpen())
+     if(!file.isOpen())
       return;
     QTextStream out(&file);
     out << ui->tableWidget->rowCount() << endl;

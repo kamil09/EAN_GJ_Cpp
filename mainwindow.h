@@ -9,8 +9,11 @@
 #include <QFile>
 #include <QMessageBox>
 #include "plik.h"
+#include <sstream>
 #include <QString>
 #include "algorytm.h"
+#include <iomanip>
+#include <iostream>
 
 namespace Ui {
 class MainWindow;

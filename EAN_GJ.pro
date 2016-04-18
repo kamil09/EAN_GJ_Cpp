@@ -4,8 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT += core gui
+QT += widgets
 CONFIG += console
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

@@ -3,9 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cmath>
 #include <iostream>
+#include <QString>
+#include <QTextStream>
 
-double * oneeqn(int i, int n, double* a, double **input);
-double *GaussJordan(int n, double *result, int *st, double **input);
+void returnRow(int i, int n,long  double* a, long double **input);
+long double *GaussJordan(int n, long double result[], int *st,long double **input);
 
 #endif // ALGORYTM_H

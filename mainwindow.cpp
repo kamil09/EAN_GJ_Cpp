@@ -15,7 +15,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionWczytaj_triggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this,tr("Wybierz plik"),"","(*.*)");
+
+    QString filename = QFileDialog::getOpenFileName(this,tr("Wybierz plik"),"../EAN_GJ/","(*.*)");
     int varCount=0;
     int rowCount=0;
     QString** values = NULL;
@@ -54,23 +55,36 @@ void MainWindow::on_actionPolicz_triggered()
 {
    int st=0;
    int n = ui->tableWidget->columnCount()-1;
-   double *result = new double[n+1];
-   for(int i=0;i<=n;i++) result[i]=0;
+   long double *result = new long double[n+2];
+   for(int i=0;i<=n+1;i++) result[i]=0;
 
-   double **numbers = new double*[ui->tableWidget->rowCount()+1];
+   long double **numbers = new long double*[ui->tableWidget->rowCount()+1];
    for (int i=0;i<=ui->tableWidget->rowCount();i++)
-   numbers[i] = new double[ ui->tableWidget->columnCount()+1];
+   numbers[i] = new long double[ ui->tableWidget->columnCount()+1];
 
    for(int i=0; i< ui->tableWidget->rowCount(); i++)
-      for (int k=0; k< ui->tableWidget->columnCount(); k++)
-         numbers[i][k]=ui->tableWidget->item(i,k)->text().toDouble();
+      for (int k=0; k< ui->tableWidget->columnCount(); k++){
+        if(ui->tableWidget->item(i,k))
+          numbers[i][k]=ui->tableWidget->item(i,k)->text().toDouble();
+        else
+            numbers[i][k]=0;
+        }
 
   result = GaussJordan(n,result,&st, numbers);
   ui->tableWidget_2->setRowCount(n);
-   for(int i=0;i<n;i++){
-        ui->tableWidget_2->setItem(i,0, new QTableWidgetItem("X"+QString::number(i+1)));
-        ui->tableWidget_2->setItem(i,1, new QTableWidgetItem(QString::number(result[i+1])));
+
+   for(int i=1;i<=n;i++){
+       std::stringstream str;
+       str << std::setprecision (16) << std::scientific << result[i];
+        ui->tableWidget_2->setItem(i-1,0, new QTableWidgetItem("X["+QString::number(i)+"]"));
+        ui->tableWidget_2->setItem(i-1,1, new QTableWidgetItem(QString::fromStdString(str.str())));
     }
+
+   
+   for (int i=0;i<=ui->tableWidget->rowCount();i++)
+      delete numbers[i];
+   delete numbers;
+   delete result;
 }
 
 void  MainWindow::checkCanMakeCalc(){

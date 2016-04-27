@@ -8,6 +8,13 @@ QT += core gui
 QT += widgets
 CONFIG += console
 
+LIBS += -L"/usr/lib" -lmpfr
+LIBS += -L"/usr/lib" -lgmp
+LIBS += -L"/usr/lib" -lboost_program_options
+
+QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -static
+QMAKE_CXXFLAGS += -m64
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,6 +29,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     plik.h \
-    algorytm.h
+    algorytm.h \
+    Interval.h
 
 FORMS    += mainwindow.ui

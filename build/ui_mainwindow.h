@@ -49,12 +49,13 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->setWindowModality(Qt::WindowModal);
-        MainWindow->resize(988, 520);
+        MainWindow->resize(1000, 550);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(50);
         sizePolicy.setVerticalStretch(50);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(1000, 550));
         MainWindow->setAutoFillBackground(true);
         actionWyj_cie = new QAction(MainWindow);
         actionWyj_cie->setObjectName(QStringLiteral("actionWyj_cie"));
@@ -114,7 +115,7 @@ public:
         tableWidget_2->setHorizontalHeaderItem(1, __qtablewidgetitem1);
         tableWidget_2->setObjectName(QStringLiteral("tableWidget_2"));
         tableWidget_2->setEnabled(true);
-        tableWidget_2->setGeometry(QRect(710, 40, 271, 431));
+        tableWidget_2->setGeometry(QRect(710, 40, 281, 431));
         QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy2.setHorizontalStretch(50);
         sizePolicy2.setVerticalStretch(50);
@@ -132,6 +133,7 @@ public:
         tableWidget_2->horizontalHeader()->setCascadingSectionResizes(true);
         tableWidget_2->horizontalHeader()->setDefaultSectionSize(50);
         tableWidget_2->horizontalHeader()->setStretchLastSection(true);
+        tableWidget_2->verticalHeader()->setDefaultSectionSize(25);
         MainWindow->setCentralWidget(centralWidget);
         pushButton->raise();
         pushButton_2->raise();
@@ -141,7 +143,7 @@ public:
         tableWidget->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 988, 22));
+        menuBar->setGeometry(QRect(0, 0, 1000, 22));
         actionInformacje = new QMenu(menuBar);
         actionInformacje->setObjectName(QStringLiteral("actionInformacje"));
         actionInformacje->setEnabled(true);

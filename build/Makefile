@@ -14,11 +14,11 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIE $(DEFINES)
-CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIE $(DEFINES)
+CXXFLAGS      = -m64 -pipe -std=c++11 -static -m64 -O2 -Wall -W -D_REENTRANT -fPIE $(DEFINES)
 INCPATH       = -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I../../EAN_GJ -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I. -I. -I.
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O1
-LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lQt5Widgets -L/usr/lib/x86_64-linux-gnu -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -L/usr/lib -lmpfr -lgmp -lboost_program_options -lQt5Widgets -L/usr/lib/x86_64-linux-gnu -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
@@ -278,7 +278,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/EAN_GJ1.0.0 || mkdir -p .tmp/EAN_GJ1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/EAN_GJ1.0.0/ && $(COPY_FILE) --parents ../mainwindow.h ../plik.h ../algorytm.h .tmp/EAN_GJ1.0.0/ && $(COPY_FILE) --parents ../main.cpp ../mainwindow.cpp ../plik.cpp ../algorytm.cpp .tmp/EAN_GJ1.0.0/ && $(COPY_FILE) --parents ../mainwindow.ui .tmp/EAN_GJ1.0.0/ && (cd `dirname .tmp/EAN_GJ1.0.0` && $(TAR) EAN_GJ1.0.0.tar EAN_GJ1.0.0 && $(COMPRESS) EAN_GJ1.0.0.tar) && $(MOVE) `dirname .tmp/EAN_GJ1.0.0`/EAN_GJ1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/EAN_GJ1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/EAN_GJ1.0.0/ && $(COPY_FILE) --parents ../mainwindow.h ../plik.h ../algorytm.h ../Interval.h .tmp/EAN_GJ1.0.0/ && $(COPY_FILE) --parents ../main.cpp ../mainwindow.cpp ../plik.cpp ../algorytm.cpp .tmp/EAN_GJ1.0.0/ && $(COPY_FILE) --parents ../mainwindow.ui .tmp/EAN_GJ1.0.0/ && (cd `dirname .tmp/EAN_GJ1.0.0` && $(TAR) EAN_GJ1.0.0.tar EAN_GJ1.0.0 && $(COMPRESS) EAN_GJ1.0.0.tar) && $(MOVE) `dirname .tmp/EAN_GJ1.0.0`/EAN_GJ1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/EAN_GJ1.0.0
 
 
 clean:compiler_clean 
@@ -427,6 +427,7 @@ moc_mainwindow.cpp: /usr/include/qt5/QtWidgets/QMainWindow \
 		../plik.h \
 		/usr/include/qt5/QtCore/QString \
 		../algorytm.h \
+		../Interval.h \
 		../mainwindow.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../mainwindow.h -o moc_mainwindow.cpp
 
@@ -572,6 +573,7 @@ main.o: ../main.cpp ../mainwindow.h \
 		../plik.h \
 		/usr/include/qt5/QtCore/QString \
 		../algorytm.h \
+		../Interval.h \
 		/usr/include/qt5/QtWidgets/QApplication \
 		/usr/include/qt5/QtWidgets/qapplication.h \
 		/usr/include/qt5/QtCore/qcoreapplication.h \
@@ -705,6 +707,7 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		../plik.h \
 		/usr/include/qt5/QtCore/QString \
 		../algorytm.h \
+		../Interval.h \
 		ui_mainwindow.h \
 		/usr/include/qt5/QtCore/QVariant \
 		/usr/include/qt5/QtWidgets/QAction \
@@ -906,7 +909,8 @@ algorytm.o: ../algorytm.cpp ../algorytm.h \
 		/usr/include/qt5/QtCore/qdatastream.h \
 		/usr/include/qt5/QtCore/qregexp.h \
 		/usr/include/qt5/QtCore/qstringmatcher.h \
-		/usr/include/qt5/QtCore/qshareddata.h
+		/usr/include/qt5/QtCore/qshareddata.h \
+		../Interval.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o algorytm.o ../algorytm.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

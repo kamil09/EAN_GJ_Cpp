@@ -2,7 +2,7 @@
 #include "Interval.h"
 
 
-void returnRow(int i, int n, long double* a, long double **input){
+void returnRow(int i, int n, double* a,  double **input){
    for(int k=1;k<=n;k++)
       a[k]=input[i-1][k-1];
 }
@@ -20,23 +20,23 @@ result: tablica z wynikiem
 status: status algorytmu
 input: maciez wejściowa
 */
-long double *GaussJordan (int n,long  double result[], int *status, long double **input){
-   int i,j,jh=0,k=0,l,lh=0,p,q,rh;
-   long double max,s;
-   long double a[n+2],b[n+2];
-   long double r[n+2];
+double *GaussJordan (int n,  double result[], int *status,  double **input){
+   int j,jh=0,k=0,l,lh=0,p,q,rh;
+    double max,s;
+    double a[n+2],b[n+2];
+    double r[n+2];
 
    *status=0;
    if (n<1) *status=1;
 
    if ( *status==0 ) {
       p=n+1;
-      for (i=0 ; i<=n+1 ; i++ )  r[i]=0;
+      for (int i=0 ; i<=n+1 ; i++ )  r[i]=0;
 
       do{
         k++;
         returnRow (k,n+1,a,input);
-         for (i=1 ; i <= n ; i++)
+         for (int i=1 ; i <= n ; i++)
             if ( r[i]!=0 ) b[(int)r[i]]=a[i];
 
          l=0;
@@ -46,7 +46,7 @@ long double *GaussJordan (int n,long  double result[], int *status, long double 
                s=a[j];
                l++;
                q=l;
-               for (i=1 ; i <= k-1 ; i++ ){
+               for (int i=1 ; i <= k-1 ; i++ ){
                   s=s-b[i]*result[q];
                   q=q+p;
                }
@@ -63,13 +63,13 @@ long double *GaussJordan (int n,long  double result[], int *status, long double 
          else {
             max=1/a[lh];
             r[jh]=k;
-            for (i=1 ; i <= p ; i++)
+            for (int i=1 ; i <= p ; i++)
                a[i]=max*a[i];
             jh=0;
             q=0;
             for (j=1 ; j <= k-1 ; j++){
                s=result[q+lh];
-               for (i=1 ; i <= p ; i++){
+               for (int i=1 ; i <= p ; i++){
                   if (i!=lh){
                      jh=jh+1;
                      result[jh]=result[q+i]-s*a[i];
@@ -77,7 +77,7 @@ long double *GaussJordan (int n,long  double result[], int *status, long double 
                }
                q+=p;
             }
-            for (i=1 ; i<= p ; i++){
+            for (int i=1 ; i<= p ; i++){
                if ( i != lh ){
                   jh=jh+1;
                   result[jh]=a[i];
@@ -93,7 +93,7 @@ long double *GaussJordan (int n,long  double result[], int *status, long double 
             if (rh!=k){
                s=result[k];
                result[k]=result[rh];
-               i=r[rh];
+              int  i=r[rh];
                while( i != k){
                  result[rh]=result[i];
                  r[rh]=rh;

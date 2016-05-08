@@ -15,7 +15,7 @@ QString** readFile(QString filename, int* varCount, int* rowCount,QString **tab)
     *varCount = line.toInt();
 
 
-   tab = new QString*[*rowCount +1];
+   tab = new QString*[(*rowCount) +1];
    for(int i = 0; i <= *rowCount; ++i)
        tab[i] = new QString[*varCount + 1];
 

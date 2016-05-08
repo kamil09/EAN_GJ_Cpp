@@ -27,7 +27,7 @@ void MainWindow::on_actionWczytaj_triggered()
         ui->tableWidget->setRowCount(rowCount);
         for(int i=0 ; i<rowCount; i++){
             for(int k=0; k<varCount; k++){
-                 ui->tableWidget->setItem(i,k, new QTableWidgetItem(values[i][k]));
+                 ui->tableWidget->setItem(i,k, new QTableWidgetItem( values[i][k] ));
             }
         }
         checkCanMakeCalc();
@@ -58,17 +58,17 @@ void MainWindow::on_actionPolicz_triggered()
    else{
      int st=0,st2=0;
      int n = ui->tableWidget->columnCount()-1;
-     long double *result = new long double[n+2];
-     interval_arithmetic::Interval<double> *resultInterval = new interval_arithmetic::Interval<double>[n+2];
+    double *result = new double[n+2];
+    interval_arithmetic::Interval<double> *resultInterval = new interval_arithmetic::Interval<double>[n+2];
      for(int i=0;i<=n+1;i++){
          result[i]=0;
          resultInterval[i]=interval_arithmetic::Interval<double>(0,0);
      }
 
-     long double **numbers = new long double*[ui->tableWidget->rowCount()+1];
+     double **numbers = new double*[n+1];
      for (int i=0;i<=ui->tableWidget->rowCount();i++)
-     numbers[i] = new long double[ ui->tableWidget->columnCount()+1];
-     char ***numbersChar = new char **[n+2];
+          numbers[i] = new double[n+1];
+     char ***numbersChar = new char **[n+1];
      for(int i=0; i<=n+1;i++) numbersChar[i] = new char *[n+1];
 
      for(int i=0; i< ui->tableWidget->rowCount(); i++)
@@ -83,22 +83,27 @@ void MainWindow::on_actionPolicz_triggered()
             }
           }
 
-    GaussJordan(n,result,&st, numbers);
-    GaussJordanInterval(n,resultInterval,&st2,numbersChar);
-    ui->tableWidget_2->setRowCount(3*n+1);
+        GaussJordan(n,result,&st, numbers);
+    //GaussJordanInterval(n,resultInterval,&st2,numbersChar);
+       ui->tableWidget_2->setRowCount(3*n+2);
 
      for(int i=1;i<=n;i++){
          std::stringstream str;
          str << std::setprecision (16) << std::scientific << result[i];
-          ui->tableWidget_2->setItem(i-1,0, new QTableWidgetItem("X["+QString::number(i)+"]"));
-          ui->tableWidget_2->setItem(i-1,1, new QTableWidgetItem(QString::fromStdString(str.str())));
+
+        QString strQ = QString::fromStdString(str.str() );
+         ui->tableWidget_2->setItem(i-1,0, new QTableWidgetItem("X["+QString::number(i)+"]"));
+        ui->tableWidget_2->setItem(i-1,1, new QTableWidgetItem( strQ ) );
       }
       ui->tableWidget_2->setItem(n,1, new QTableWidgetItem("Arytmetyka przedziałowa:"));
 
-     for (int i=0;i<=ui->tableWidget->rowCount();i++)
-        delete numbers[i];
-     delete numbers;
-     delete result;
+//     for (int i=0;i<n+1;i++)
+//        delete numbers[i];
+//     delete numbers;
+//    delete result;
+//    for(int i=0; i<=n+1;i++)
+//          delete numbersChar[i];
+//      delete numbersChar;
 
 
     }

@@ -7,10 +7,9 @@ void returnRow(int i, int n, long double* a, long double **input){
       a[k]=input[i-1][k-1];
 }
 
-void returnRowInterval(int i, int n, interval_arithmetic::Interval<long double>* a, char ***input){
+void returnRowInterval(int i, int n, interval_arithmetic::Interval<long double>* a, string **input){
    for(int k=1;k<=n;k++){
-      const string& s = input[i-1][k-1];
-      a[k]=interval_arithmetic::Interval<long double>::IntRead(s);
+       a[k]=interval_arithmetic::Interval<long double>::IntRead(input[i-1][k-1]);
    }
 }
 
@@ -111,19 +110,21 @@ long double *GaussJordan (int n,  long double result[], int *status,  long  doub
 }
 
 
-void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *resultInterval , int *status, char ***numbersChar)
+void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *resultInterval , int *status, string **numbersChar)
 {
    int i,j,jh=0,k=0,l,lh=0,p,q,rh;
    interval_arithmetic::Interval<long double> max,s;
    interval_arithmetic::Interval<long double> a[n+2],b[n+2];
    interval_arithmetic::Interval<long double> r[n+2];
+   ostringstream ss;
+
 
    *status=0;
    if (n<1) *status=1;
 
    if ( *status==0 ) {
       p=n+1;
-      for (i=1 ; i<=n+1 ; i++ )  interval_arithmetic::Interval<long double>::IntRead("0");
+      for (i=1 ; i<=n+1 ; i++ )  r[i].Initialize();
 
       do{
         k++;
@@ -136,40 +137,48 @@ void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *res
            }
 
          l=0;
-         max=interval_arithmetic::Interval<long double>::IntRead("0");
-         /*
+         max.Initialize();
          for (j=1 ; j <= n+1 ; j++ ){
-            if ( r[j] == 0){
+            if ( r[j].a <=0 && r[j].b>=0){
                s=a[j];
                l++;
                q=l;
                for (i=1 ; i <= k-1 ; i++ ){
-                  s=s-b[i]*result[q];
+                  s=s-b[i]*resultInterval[q];
                   q=q+p;
                }
                a[l]=s;
-               s=fabs(s);
-               if ( (j<n+1) && (s>max)){
+               //s=fabs(s);
+               if(s.a<=0 && s.b<=0 ){
+                   long double tmp = s.b;
+                   s.b=s.a*-1;
+                   s.a=tmp*-1;
+                 }
+               else if(s.a <=0) s.a=0;
+
+               if ( (j<n+1) && ( s.a>=max.a && s.b>max.b )){
                   max=s;
                   jh=j;
                   lh=l;
                }
             }
          }
-         if (max==0) *status=2;
+
+         if (max.a <=0 && max.b>=0 ) *status=2;
          else {
-            max=1/a[lh];
-            r[jh]=k;
+           max=interval_arithmetic::Interval<long double>::IntRead("1")/a[lh];
+           ss << k;
+            r[jh]=interval_arithmetic::Interval<long double>::IntRead(ss.str());
             for (i=1 ; i <= p ; i++)
                a[i]=max*a[i];
             jh=0;
             q=0;
             for (j=1 ; j <= k-1 ; j++){
-               s=result[q+lh];
+               s=resultInterval[q+lh];
                for (i=1 ; i <= p ; i++){
                   if (i!=lh){
                      jh=jh+1;
-                     result[jh]=result[q+i]-s*a[i];
+                     resultInterval[jh]=resultInterval[q+i]-s*a[i];
                   }
                }
                q+=p;
@@ -177,32 +186,34 @@ void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *res
             for (i=1 ; i<= p ; i++){
                if ( i != lh ){
                   jh=jh+1;
-                  result[jh]=a[i];
+                  resultInterval[jh]=a[i];
                }
             }
             p--;
-         }*/
+         }
       } while((k!=n) && (*status != 2) );
 
-      /*
-      if (*status==0){
-         for (k=1; k<= n ; k++){
-            rh=r[k];
-            if (rh!=k){
-               s=result[k];
-               result[k]=result[rh];
-               i=r[rh];
-               while( i != k){
-                 result[rh]=result[i];
-                 r[rh]=rh;
-                 rh=i;
-                 i=r[rh];
-               }
-               result[rh]=s;
-               r[rh]=rh;
-            }
-         }
-      }
-         */
+
+//      if (*status==0){
+//         for (k=1; k<= n ; k++){
+//            rh=r[k].a;
+//            if (rh!=k){
+//               s=resultInterval[k];
+//               resultInterval[k]=resultInterval[rh];
+//               i=r[rh].a;
+//               while( i != k){
+//                 resultInterval[rh]=resultInterval[i];
+//                 r[rh].a=rh;
+//                 r[rh].b=rh;
+//                 rh=i;
+//                 i=r[rh].a;
+//               }
+//               resultInterval[rh]=s;
+//               r[rh].a=rh;
+//               r[rh].b=rh;
+//            }
+//         }
+//      }
+
   }
 }

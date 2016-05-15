@@ -68,8 +68,8 @@ void MainWindow::on_actionPolicz_triggered()
      long double **numbers = new long double*[n+1];
      for (int i=0;i<=n;i++)
           numbers[i] = new long double[n+1];
-     char ***numbersChar = new char **[n+2];
-    for(int i=0; i<=n+1;i++) numbersChar[i] = new char *[n+1];
+    string **numbersChar = new string *[n+2];
+    for(int i=0; i<=n+1;i++) numbersChar[i] = new string[n+1];
 
      for(int i=0; i< n; i++)
         for (int k=0; k<= n; k++){
@@ -96,14 +96,27 @@ void MainWindow::on_actionPolicz_triggered()
         ui->tableWidget_2->setItem(i-1,1, new QTableWidgetItem( strQ ) );
       }
       ui->tableWidget_2->setItem(n,1, new QTableWidgetItem("Arytmetyka przedziałowa:"));
+      int index = n+1;
+      for(int i=1;i<=n;i++){
+          string a;
+          string b;
+          resultInterval->IEndsToStrings(a,b);
+          ui->tableWidget_2->setItem(index,0, new QTableWidgetItem("X["+QString::number(i)+"]"));
+          QString strQ = QString::fromStdString(a);
+          ui->tableWidget_2->setItem(index,1, new QTableWidgetItem( strQ ) );
+          index++;
+          strQ = QString::fromStdString(b);
+          ui->tableWidget_2->setItem(index,1, new QTableWidgetItem( strQ ) );
+          index++;
+       }
 
      for (int i=0;i<n+1;i++)
         delete numbers[i];
      delete numbers;
     delete result;
-    for(int i=0; i<=n+1;i++)
-          delete numbersChar[i];
-      delete numbersChar;
+    //for(int i=0; i<=n+1;i++)
+     //    delete numbersChar[i];
+      //delete numbersChar;
     }
 }
 

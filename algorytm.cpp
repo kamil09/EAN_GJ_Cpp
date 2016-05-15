@@ -2,15 +2,15 @@
 #include "Interval.h"
 
 
-void returnRow(int i, int n, double* a,  double **input){
+void returnRow(int i, int n, long double* a, long double **input){
    for(int k=1;k<=n;k++)
       a[k]=input[i-1][k-1];
 }
 
-void returnRowInterval(int i, int n, interval_arithmetic::Interval<double>* a, char ***input){
+void returnRowInterval(int i, int n, interval_arithmetic::Interval<long double>* a, char ***input){
    for(int k=1;k<=n;k++){
       const string& s = input[i-1][k-1];
-      a[k]=interval_arithmetic::Interval<double>::IntRead(s);
+      a[k]=interval_arithmetic::Interval<long double>::IntRead(s);
    }
 }
 
@@ -20,11 +20,11 @@ result: tablica z wynikiem
 status: status algorytmu
 input: maciez wejściowa
 */
-double *GaussJordan (int n,  double result[], int *status,  double **input){
+long double *GaussJordan (int n,  long double result[], int *status,  long  double **input){
    int j,jh=0,k=0,l,lh=0,p,q,rh;
-    double max,s;
-    double a[n+2],b[n+2];
-    double r[n+2];
+   long  double max,s;
+   long  double a[n+2],b[n+2];
+   long  double r[n+2];
 
    *status=0;
    if (n<1) *status=1;
@@ -111,32 +111,32 @@ double *GaussJordan (int n,  double result[], int *status,  double **input){
 }
 
 
-void GaussJordanInterval (int n, interval_arithmetic::Interval<double> *resultInterval , int *status, char ***numbersChar)
+void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *resultInterval , int *status, char ***numbersChar)
 {
    int i,j,jh=0,k=0,l,lh=0,p,q,rh;
-   interval_arithmetic::Interval<double> max,s;
-   interval_arithmetic::Interval<double> a[n+2],b[n+2];
-   interval_arithmetic::Interval<double> r[n+2];
+   interval_arithmetic::Interval<long double> max,s;
+   interval_arithmetic::Interval<long double> a[n+2],b[n+2];
+   interval_arithmetic::Interval<long double> r[n+2];
 
    *status=0;
    if (n<1) *status=1;
 
    if ( *status==0 ) {
       p=n+1;
-      for (i=1 ; i<=n+1 ; i++ )  interval_arithmetic::Interval<double>::IntRead("0");
+      for (i=1 ; i<=n+1 ; i++ )  interval_arithmetic::Interval<long double>::IntRead("0");
 
       do{
         k++;
         returnRowInterval (k,n+1,a,numbersChar);
          for (i=1 ; i <= n ; i++){
-            double ax = r[i].a;
-            double bx = r[i].b;
+           long  double ax = r[i].a;
+            long double bx = r[i].b;
              if ( !(ax<=0 && bx>=0 ) )
                b[(int)ax]=a[i];
            }
 
          l=0;
-         max=interval_arithmetic::Interval<double>::IntRead("0");
+         max=interval_arithmetic::Interval<long double>::IntRead("0");
          /*
          for (j=1 ; j <= n+1 ; j++ ){
             if ( r[j] == 0){

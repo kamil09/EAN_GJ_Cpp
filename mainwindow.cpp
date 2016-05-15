@@ -58,21 +58,21 @@ void MainWindow::on_actionPolicz_triggered()
    else{
      int st=0,st2=0;
      int n = ui->tableWidget->columnCount()-1;
-    double *result = new double[n+2];
-    interval_arithmetic::Interval<double> *resultInterval = new interval_arithmetic::Interval<double>[n+2];
+    long double *result = new long double[n+2];
+    interval_arithmetic::Interval<long double> *resultInterval = new interval_arithmetic::Interval<long double>[n+2];
      for(int i=0;i<=n+1;i++){
          result[i]=0;
-         resultInterval[i]=interval_arithmetic::Interval<double>(0,0);
+         resultInterval[i]=interval_arithmetic::Interval<long double>(0,0);
      }
 
-     double **numbers = new double*[n+1];
-     for (int i=0;i<=ui->tableWidget->rowCount();i++)
-          numbers[i] = new double[n+1];
-     char ***numbersChar = new char **[n+1];
-     for(int i=0; i<=n+1;i++) numbersChar[i] = new char *[n+1];
+     long double **numbers = new long double*[n+1];
+     for (int i=0;i<=n;i++)
+          numbers[i] = new long double[n+1];
+     char ***numbersChar = new char **[n+2];
+    for(int i=0; i<=n+1;i++) numbersChar[i] = new char *[n+1];
 
-     for(int i=0; i< ui->tableWidget->rowCount(); i++)
-        for (int k=0; k< ui->tableWidget->columnCount(); k++){
+     for(int i=0; i< n; i++)
+        for (int k=0; k<= n; k++){
           if(ui->tableWidget->item(i,k)){
             numbers[i][k]=ui->tableWidget->item(i,k)->text().toDouble();
             numbersChar[i][k]=ui->tableWidget->item(i,k)->text().toLatin1().data();
@@ -84,8 +84,8 @@ void MainWindow::on_actionPolicz_triggered()
           }
 
         GaussJordan(n,result,&st, numbers);
-    //GaussJordanInterval(n,resultInterval,&st2,numbersChar);
-       ui->tableWidget_2->setRowCount(3*n+2);
+        GaussJordanInterval(n,resultInterval,&st2,numbersChar);
+        ui->tableWidget_2->setRowCount(3*n+3);
 
      for(int i=1;i<=n;i++){
          std::stringstream str;
@@ -97,15 +97,13 @@ void MainWindow::on_actionPolicz_triggered()
       }
       ui->tableWidget_2->setItem(n,1, new QTableWidgetItem("Arytmetyka przedziałowa:"));
 
-//     for (int i=0;i<n+1;i++)
-//        delete numbers[i];
-//     delete numbers;
-//    delete result;
-//    for(int i=0; i<=n+1;i++)
-//          delete numbersChar[i];
-//      delete numbersChar;
-
-
+     for (int i=0;i<n+1;i++)
+        delete numbers[i];
+     delete numbers;
+    delete result;
+    for(int i=0; i<=n+1;i++)
+          delete numbersChar[i];
+      delete numbersChar;
     }
 }
 

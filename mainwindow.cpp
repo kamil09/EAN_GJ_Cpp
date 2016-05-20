@@ -84,7 +84,7 @@ void MainWindow::on_actionPolicz_triggered()
           }
 
         GaussJordan(n,result,&st, numbers);
-        GaussJordanInterval(n,resultInterval,&st2,numbersChar);
+        //GaussJordanInterval(n,resultInterval,&st2,numbersChar);
         ui->tableWidget_2->setRowCount(3*n+3);
 
      for(int i=1;i<=n;i++){

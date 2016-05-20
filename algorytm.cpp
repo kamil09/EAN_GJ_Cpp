@@ -20,13 +20,13 @@ status: status algorytmu
 input: maciez wejściowa
 */
 long double *GaussJordan (int n,  long double result[], int *status,  long  double **input){
-   int j,jh=0,k=0,l,lh=0,p,q,rh;
+   int j,jh=0,k=0,lh=0,p,q,rh;
    long  double max,s;
    long  double a[n+2],b[n+2];
-   long  double r[n+2];
+   int r[n+2];
 
    *status=0;
-   if (n<1) *status=1;
+   if (n<1) *status=1;           //Gdy nie ma danych :(
 
    if ( *status==0 ) {
       p=n+1;
@@ -35,10 +35,10 @@ long double *GaussJordan (int n,  long double result[], int *status,  long  doub
       do{
         k++;
         returnRow (k,n+1,a,input);
-         for (int i=1 ; i <= n ; i++)
+        for (int i=1 ; i <= n ; i++)
             if ( r[i]!=0 ) b[(int)r[i]]=a[i];
 
-         l=0;
+         int l=0;
          max=0;
          for (j=1 ; j <= n+1 ; j++ ){
             if ( r[j] == 0){
@@ -58,7 +58,7 @@ long double *GaussJordan (int n,  long double result[], int *status,  long  doub
                }
             }
          }
-         if (max==0) *status=2;
+         if (max==0) *status=2;              //Jeśli maksymalny jest 0 to nie można dalej liczyć
          else {
             max=1/a[lh];
             r[jh]=k;
@@ -92,7 +92,7 @@ long double *GaussJordan (int n,  long double result[], int *status,  long  doub
             if (rh!=k){
                s=result[k];
                result[k]=result[rh];
-              int  i=r[rh];
+               int  i=r[rh];
                while( i != k){
                  result[rh]=result[i];
                  r[rh]=rh;

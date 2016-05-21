@@ -11,7 +11,7 @@
 
 void returnRow(int i, int n, long double* a, long double **input);
 void returnRowInterval(int i, int n, interval_arithmetic::Interval<long double>* a, string **);
-long double *GaussJordan(int n,long  double result[], int *st,long  double **input);
+void GaussJordan(int n,long  double result[], int *st,long  double **input);
 void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *resultInterval , int *status, string **numbersChar);
 
 #endif // ALGORYTM_H

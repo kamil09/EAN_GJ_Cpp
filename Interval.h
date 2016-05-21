@@ -61,6 +61,7 @@ public:
 	Interval<T> Projection();
 	Interval<T> Opposite();
 	Interval<T> Inverse();
+   Interval<T> Abs();         //Dopisał Kamil
 	T GetWidth();
 	static void Initialize();
 	static Interval<T> ISqr2();
@@ -343,6 +344,24 @@ inline Interval<T> Interval<T>::Opposite() {
 	r.a = -x.a;
 	r.b = -x.b;
 	return r;
+}
+
+template<typename T>
+inline Interval<T> Interval<T>::Abs() {
+	Interval<T> x(this->a, this->b);
+   if(x.a<=0 && x.b<=0 ){
+      T tmp = x.b;
+      x.b=x.a*-1;
+      x.a=tmp*-1;
+   }
+   else if(x.a <=0 && (x.a*-1)<x.b ) x.a=0;
+   else if(x.a <=0){
+      T tmp = x.a;
+      x.a=0;
+      x.b=tmp*-1;
+   }
+
+   return x;
 }
 
 template<typename T>

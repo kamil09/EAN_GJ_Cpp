@@ -62,14 +62,14 @@ void GaussJordan (int n,  long double result[], int *status,  long  double **inp
             }
          }
          if (max==0) {
-            *status=2;              //Jeśli maksymalny jest 0 to nie można dalej liczyć
+            *status=2;              //Jeśli maksymalny c do wart. bezw. jest 0 to nie można dalej liczyć - maciez jest osobliwa!
             return;
          }
          else {
             max=1/a[lh];
             r[jh]=k;
             for (int i=1 ; i <= p ; i++)
-               a[i]=max*a[i];
+               a[i]=max*a[i];             //Dzielimy wiersz przez MAX
             jh=0;
             q=0;
             for (j=1 ; j <= k-1 ; j++){
@@ -92,7 +92,7 @@ void GaussJordan (int n,  long double result[], int *status,  long  double **inp
          }
       } while((k!=n) && (*status != 2) );
 
-      if ( (*status) == 0){
+      if ( (*status) == 0){               //Przywrócenie odpowiedzniej kolejności zmiennych
          for (k=1; k<= n ; k++){
             rh=r[k];
             if (rh!=k){
@@ -115,7 +115,11 @@ void GaussJordan (int n,  long double result[], int *status,  long  double **inp
    return;
 }
 
-
+/**
+ * Algorytm z pełnym wyborem pozwala osiągnąć największą dokładność, ponieważ dzielimy współczynniki najpierw przez MAX,
+ * co za tym idzie następne operacje są wykonywane na liczbach z przedziału <0;1>. Jest to optymalniejsze od wykonywania operacji
+ * na większych liczbach ponieważ bliżej 0 liczby maszynowe są gęściej upakowane. (mamy więc większą dokładnośc)
+ */
 void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *resultInterval , int *status, string **numbersChar)
 {
    int j,jh=0,k=0,l,lh=0,p,q,rh;
@@ -134,13 +138,11 @@ void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *res
       do{
         k++;
         returnRowInterval (k,n+1,a,numbersChar);
-        std::cout << a[1].a << "  " << a[1].b << std::endl;
         for (int i=1 ; i <= n ; i++)
             if ( r[i]!=0 ) b[r[i]]=a[i];
 
          l=0;
          max=interval_arithmetic::Interval<long double>::IntRead("0");
-         std::cout << max.a <<"  "<< max.b << std::endl;
          for (j=1 ; j <= n+1 ; j++ ){
             if ( r[j] == 0){
                s=a[j];
@@ -151,7 +153,6 @@ void GaussJordanInterval (int n, interval_arithmetic::Interval<long double> *res
                   q=q+p;
                }
                a[l]=s;
-               //s=fabs(s);
                s=s.Abs();
                if ( (j<n+1) && ( s.a>=max.a && s.b>=max.b )){
                   max=s;
